@@ -1,0 +1,98 @@
+[
+    {
+        "id": 1,
+        "nombre": "Ninetcome",
+        "precio": 195000,
+        "imagen": "./imagen/campera-6.jpg",
+        "stock": 10,
+        "categoria": "Camperas"
+    },
+    {
+        "id": 2,
+        "nombre": "Always A Head",
+        "precio": 200000,
+        "imagen": "./imagen/campera-7.jpg",
+        "stock": 25,
+        "categoria": "Camperas"
+    },
+    {
+        "id": 3,
+        "nombre": "Simpson",
+        "precio": 250000,
+        "imagen": "./imagen/casco-31.jpg",
+        "stock": 12,
+        "categoria": "Cascos"
+    },
+    {
+        "id": 4,
+        "nombre": "Aral",
+        "precio": 220000,
+        "imagen": "./imagen/casco-33.jpg",
+        "stock": 18,
+        "categoria": "Cascos"
+    },
+    {
+        "id": 5,
+        "nombre": "Royal Enfield",
+        "precio": 260000,
+        "imagen": "./imagen/casco-34.jpg",
+        "stock": 20,
+        "categoria": "Cascos"
+    },
+    {
+        "id": 6,
+        "nombre": "Antiparra Fox Racing Air",
+        "precio": 110000,
+        "imagen": "./imagen/antiparra-1.avif",
+        "stock": 15,
+        "categoria": "Antiparras"
+    },
+    {
+        "id": 8,
+        "nombre": "Antiparra Fox Racing Main",
+        "precio": 115000,
+        "imagen": "./imagen/antiparra-2.avif",
+        "stock": 17,
+        "categoria": "Antiparras"
+    },
+    {
+        "id": 9,
+        "nombre": "Antiparra X",
+        "precio": 90000,
+        "imagen": "./imagen/antiparra-3.png",
+        "stock": 22,
+        "categoria": "Antiparras"
+    },
+    {
+        "id": 7,
+        "nombre": "Guantes Pro Biker",
+        "precio": 80000,
+        "imagen": "./imagen/guantes-10.jpg",
+        "stock": 11,
+        "categoria": "Guantes"
+    },
+    {
+        "id": 10,
+        "nombre": "Guantes Fox",
+        "precio": 95000,
+        "imagen": "./imagen/guantes-2.avif",
+        "stock": 15,
+        "categoria": "Guantes"
+    },
+    {
+        "id": 11,
+        "nombre": "Botas Fox RangerM",
+        "precio": 125000,
+        "imagen": "./imagen/botas-1.avif",
+        "stock": 15,
+        "categoria": "Botas"
+    },
+    {
+        "id": 12,
+        "nombre": "Botas Fox RangerN",
+        "precio": 130000,
+        "imagen": "./imagen/botas-2.avif",
+        "stock": 17,
+        "categoria": "Botas"
+    }
+]

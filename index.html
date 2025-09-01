@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="estilo.css">
+    <link rel="icon" href="./imagen/favicon.ico" type="image/x-icon">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <title>Accesorios de Motos - Gladiadores</title>
+</head>
+<body>
+<header>
+    <h1>Accesorios de Motos "Gladiadores"</h1>
+    <button id="boton-carrito" class="icono" aria-label="abrir carrito">
+        <img src="imagen/shopping-cart.png" alt="carrito">
+        <span id="contador-carrito" class="contador-carrito">0</span>
+    </button>
+</header>
+
+<div class="filtros">
+    <button class="filtro-categoria activo" data-categoria="todos">Todos</button>
+    <button class="filtro-categoria" data-categoria="Cascos">Cascos</button>
+    <button class="filtro-categoria" data-categoria="Antiparras">Antiparras</button>
+    <button class="filtro-categoria" data-categoria="Guantes">Guantes</button>
+    <button class="filtro-categoria" data-categoria="Botas">Botas</button>
+    <button class="filtro-categoria" data-categoria="Camperas">Camperas</button>
+    <input type="text" class="busqueda" placeholder="Buscar productos..." id="busqueda">
+</div>
+
+<main id="contenedor-productos">  </main>
+
+<aside id="carrito" class="carrito">
+    <button id="cerrar-carrito" aria-label="Cerrar carrito">✖</button>
+    <h2>Carrito de compras</h2>
+    <div id="carrito-dinamico-interno">
+        <p>El carrito está vacío</p>
+    </div>
+    <div id="total"></div>
+    <button id="finalizar-compra" class="finalizar-compra">Finalizar compra</button>
+</aside>
+
+<footer>
+    <p>Venta de Accesorio de Motos "Gladiadores"</p>
+</footer>
+
+<script src="./main.js"></script>
+</body>
+
+</html>
