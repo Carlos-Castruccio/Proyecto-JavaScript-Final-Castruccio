@@ -120,6 +120,13 @@ const agregarACarrito = () => {
 
     let calculoTotal = calculadoraTotal();
     total.innerHTML = `<p class="total">Total: $${calculoTotal.toLocaleString()}</p>`;
+    
+    // Verificar si el usuario está logueado para mostrar mensaje adicional
+    const usuarioLogueado = JSON.parse(localStorage.getItem('usuarioLogueado'));
+    if (!usuarioLogueado) {
+        total.innerHTML += '<p style="color: #dc3545; font-size: 0.9rem; margin-top: 10px;">⚠️ Debes iniciar sesión para finalizar la compra</p>';
+    }
+    
     actualizarContadorCarrito();
     guardarCarrito();
 };
@@ -192,6 +199,25 @@ const renderizarProductos = () => {
 
 // Event listener para finalizar compra
 finalizarCompra.addEventListener('click', () => {
+    // Verificar si hay un usuario logueado
+    const usuarioLogueado = JSON.parse(localStorage.getItem('usuarioLogueado'));
+    
+    if (!usuarioLogueado) {
+        Swal.fire({
+            title: 'Debes iniciar sesión',
+            text: 'Para finalizar la compra necesitas estar logueado',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Iniciar Sesión',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                mostrarFormularioLogin(false);
+            }
+        });
+        return;
+    }
+    
     if (carrito.length === 0) {
         mostrarNotificacion('El carrito está vacío', 'warning');
         return;
@@ -360,6 +386,8 @@ const verificarSesion = () => {
     const usuarioLogueado = JSON.parse(localStorage.getItem('usuarioLogueado'));
     if (usuarioLogueado) {
         mostrarUsuarioLogueado(usuarioLogueado.email);
+    } else {
+        actualizarEstadoBotonFinalizar();
     }
 };
 
@@ -468,11 +496,27 @@ const iniciarSesion = (email, password) => {
     }
 };
 
+// Función que permite finalizar compra si el usuario está logueado
+const actualizarEstadoBotonFinalizar = () => {
+    const usuarioLogueado = JSON.parse(localStorage.getItem('usuarioLogueado'));
+    
+    if (usuarioLogueado) {
+        finalizarCompra.disabled = false;
+        finalizarCompra.style.opacity = '1';
+        finalizarCompra.style.cursor = 'pointer';
+    } else {
+        finalizarCompra.disabled = true;
+        finalizarCompra.style.opacity = '0.5';
+        finalizarCompra.style.cursor = 'not-allowed';
+    }
+};
+
 // Función para mostrar usuario logueado
 const mostrarUsuarioLogueado = (email) => {
     loginContainer.style.display = 'none';
     userInfo.style.display = 'flex';
     userEmail.textContent = email;
+    actualizarEstadoBotonFinalizar();
 };
 
 // Función para cerrar sesión
@@ -481,6 +525,7 @@ const cerrarSesion = () => {
     loginContainer.style.display = 'flex';
     userInfo.style.display = 'none';
     userEmail.textContent = '';
+    actualizarEstadoBotonFinalizar();
     mostrarNotificacion('Sesión cerrada exitosamente', 'info');
 };
 
