@@ -1,4 +1,4 @@
-/* Reset  */
+/* Reset inicial */
 * {
     box-sizing: border-box;
     margin: 0;
@@ -24,6 +24,59 @@ header {
     top: 0;
     z-index: 100;
     box-shadow: 0 2px 6px rgba(0, 0, 0, .15);
+}
+
+.nav-container {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.login-container {
+    display: flex;
+    gap: 10px;
+}
+
+.btn-login {
+    background: #ff9800;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.2s ease;
+}
+
+.btn-login:hover {
+    background: #fb8c00;
+}
+
+.user-info {
+    display: none;
+    align-items: center;
+    gap: 15px;
+}
+
+#user-email {
+    color: #ffcc00;
+    font-weight: bold;
+    font-size: 0.9rem;
+}
+
+.btn-logout {
+    background: #dc3545;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.8rem;
+    transition: background-color 0.2s ease;
+}
+
+.btn-logout:hover {
+    background: #c82333;
 }
 
 .icono {
@@ -345,7 +398,7 @@ footer {
     border-color: #ff9800;
 }
 
-/*query */
+/* ===== Media Queries ===== */
 
 @media (min-width: 1440px) {
     #contenedor-productos {
@@ -372,6 +425,22 @@ footer {
         padding: 0 12px;
         flex-direction: column;
         align-items: stretch;
+    }
+    
+    .nav-container {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .login-container {
+        flex-direction: column;
+        gap: 5px;
+    }
+    
+    .user-info {
+        flex-direction: column;
+        gap: 8px;
+        text-align: center;
     }
     
     .carrito {

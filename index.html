@@ -12,10 +12,20 @@
 <body>
 <header>
     <h1>Accesorios de Motos "Gladiadores"</h1>
-    <button id="boton-carrito" class="icono" aria-label="abrir carrito">
-        <img src="imagen/shopping-cart.png" alt="carrito">
-        <span id="contador-carrito" class="contador-carrito">0</span>
-    </button>
+    <div class="nav-container">
+        <div class="login-container" id="login-container">
+            <button id="btn-iniciar-sesion" class="btn-login">Iniciar Sesión</button>
+            <button id="btn-registrarse" class="btn-login">Registrarse</button>
+        </div>
+        <div class="user-info" id="user-info">
+            <span id="user-email"></span>
+            <button id="btn-cerrar-sesion" class="btn-logout">Cerrar Sesión</button>
+        </div>
+        <button id="boton-carrito" class="icono" aria-label="abrir carrito">
+            <img src="imagen/shopping-cart.png" alt="carrito">
+            <span id="contador-carrito" class="contador-carrito">0</span>
+        </button>
+    </div>
 </header>
 
 <div class="filtros">

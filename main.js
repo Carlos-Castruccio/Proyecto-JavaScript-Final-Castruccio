@@ -18,6 +18,23 @@ let productos = [];
 // Estado del carrito que se guarda en el localStorage
 let carrito = JSON.parse(localStorage.getItem('carrito')) || [];
 
+// Función para limpiar carrito corrupto
+const limpiarCarritoCorrupto = () => {
+    // Verificar si hay productos en el carrito que no existen en la lista de productos
+    if (carrito.length > 0) {
+        const productosValidos = carrito.filter(item => {
+            // Verificar que el item tenga todas las propiedades necesarias
+            return item && item.id && item.nombre && item.precio && item.imagen && item.cantidad;
+        });
+        
+        if (productosValidos.length !== carrito.length) {
+            console.log('Carrito corrupto detectado, limpiando...');
+            carrito = [];
+            localStorage.removeItem('carrito');
+        }
+    }
+};
+
 // Función para guardar carrito en localStorage
 const guardarCarrito = () => {
     localStorage.setItem('carrito', JSON.stringify(carrito));
@@ -309,6 +326,14 @@ const inicializarApp = async () => {
         
         // Renderizar productos iniciales
         renderizarProductos();
+        
+        // Limpiar carrito 
+        limpiarCarritoCorrupto();
+        
+        // Verificar si el carrito tiene datos válidos antes de renderizarlo
+        if (carrito && carrito.length > 0) {
+            console.log('Carrito cargado desde localStorage:', carrito);
+        }
         agregarACarrito();
         
     } catch (error) {
@@ -319,3 +344,150 @@ const inicializarApp = async () => {
 
 // Event listener principal
 document.addEventListener('DOMContentLoaded', inicializarApp);
+
+// ===== SISTEMA DE LOGIN O REGISTRO =====
+
+// Elementos del DOM para login
+const btnIniciarSesion = document.getElementById('btn-iniciar-sesion');
+const btnRegistrarse = document.getElementById('btn-registrarse');
+const btnCerrarSesion = document.getElementById('btn-cerrar-sesion');
+const loginContainer = document.getElementById('login-container');
+const userInfo = document.getElementById('user-info');
+const userEmail = document.getElementById('user-email');
+
+// Verificar si hay un usuario logueado al cargar la página
+const verificarSesion = () => {
+    const usuarioLogueado = JSON.parse(localStorage.getItem('usuarioLogueado'));
+    if (usuarioLogueado) {
+        mostrarUsuarioLogueado(usuarioLogueado.email);
+    }
+};
+
+// Función para validar email
+const validarEmail = (email) => {
+    const regexEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return regexEmail.test(email);
+};
+
+// Función para validar contraseña
+const validarPassword = (password) => {
+    // Mínimo 4 caracteres numéricos
+    const regexPassword = /^\d{4,}$/;
+    return regexPassword.test(password);
+};
+
+// Función para mostrar formulario de login
+const mostrarFormularioLogin = (esRegistro = false) => {
+    const titulo = esRegistro ? 'Registrarse' : 'Iniciar Sesión';
+    const textoBoton = esRegistro ? 'Registrarse' : 'Iniciar Sesión';
+    
+    Swal.fire({
+        title: titulo,
+        html: `
+            <input id="swal-email" class="swal2-input" placeholder="Email" type="email">
+            <input id="swal-password" class="swal2-input" placeholder="Contraseña (mínimo 4 números)" type="password">
+            ${esRegistro ? '<input id="swal-confirm-password" class="swal2-input" placeholder="Confirmar contraseña" type="password">' : ''}
+        `,
+        showCancelButton: true,
+        confirmButtonText: textoBoton,
+        cancelButtonText: 'Cancelar',
+        focusConfirm: false,
+        preConfirm: () => {
+            const email = document.getElementById('swal-email').value.trim();
+            const password = document.getElementById('swal-password').value;
+            
+            if (!email || !password) {
+                Swal.showValidationMessage('Por favor completa todos los campos');
+                return false;
+            }
+            
+            // Validar formato de email
+            if (!validarEmail(email)) {
+                Swal.showValidationMessage('Por favor ingresa un email válido');
+                return false;
+            }
+            
+            // Validar contraseña
+            if (!validarPassword(password)) {
+                Swal.showValidationMessage('La contraseña debe tener mínimo 4 números');
+                return false;
+            }
+            
+            if (esRegistro) {
+                const confirmPassword = document.getElementById('swal-confirm-password').value;
+                if (password !== confirmPassword) {
+                    Swal.showValidationMessage('Las contraseñas no coinciden');
+                    return false;
+                }
+            }
+            
+            return { email, password };
+        }
+    }).then((result) => {
+        if (result.isConfirmed) {
+            if (esRegistro) {
+                registrarUsuario(result.value.email, result.value.password);
+            } else {
+                iniciarSesion(result.value.email, result.value.password);
+            }
+        }
+    });
+};
+
+// Función para registrar usuario
+const registrarUsuario = (email, password) => {
+    const usuarios = JSON.parse(localStorage.getItem('usuarios')) || [];
+    
+    // Verificar si el usuario ya existe
+    if (usuarios.find(u => u.email === email)) {
+        mostrarNotificacion('El usuario ya existe', 'error');
+        return;
+    }
+    
+    // Agregar nuevo usuario
+    usuarios.push({ email, password });
+    localStorage.setItem('usuarios', JSON.stringify(usuarios));
+    
+    // Loguear automáticamente
+    localStorage.setItem('usuarioLogueado', JSON.stringify({ email }));
+    mostrarUsuarioLogueado(email);
+    mostrarNotificacion('Usuario registrado y logueado exitosamente', 'success');
+};
+
+// Función para iniciar sesión
+const iniciarSesion = (email, password) => {
+    const usuarios = JSON.parse(localStorage.getItem('usuarios')) || [];
+    const usuario = usuarios.find(u => u.email === email && u.password === password);
+    
+    if (usuario) {
+        localStorage.setItem('usuarioLogueado', JSON.stringify({ email }));
+        mostrarUsuarioLogueado(email);
+        mostrarNotificacion('Sesión iniciada exitosamente', 'success');
+    } else {
+        mostrarNotificacion('Email o contraseña incorrectos', 'error');
+    }
+};
+
+// Función para mostrar usuario logueado
+const mostrarUsuarioLogueado = (email) => {
+    loginContainer.style.display = 'none';
+    userInfo.style.display = 'flex';
+    userEmail.textContent = email;
+};
+
+// Función para cerrar sesión
+const cerrarSesion = () => {
+    localStorage.removeItem('usuarioLogueado');
+    loginContainer.style.display = 'flex';
+    userInfo.style.display = 'none';
+    userEmail.textContent = '';
+    mostrarNotificacion('Sesión cerrada exitosamente', 'info');
+};
+
+// Event listeners para login
+btnIniciarSesion.addEventListener('click', () => mostrarFormularioLogin(false));
+btnRegistrarse.addEventListener('click', () => mostrarFormularioLogin(true));
+btnCerrarSesion.addEventListener('click', cerrarSesion);
+
+// Verificar sesión al cargar la página
+verificarSesion();
